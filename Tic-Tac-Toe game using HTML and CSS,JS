@@ -1,0 +1,97 @@
+#HTML
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <h1>Tic-Tac-Toe</h1>
+    <table>
+      <tr>
+        <td id="0"></td>
+        <td id="1"></td>
+        <td id="2"></td>
+      </tr>
+      <tr>
+        <td id="3"></td>
+        <td id="4"></td>
+        <td id="5"></td>
+      </tr>
+      <tr>
+        <td id="6"></td>
+        <td id="7"></td>
+        <td id="8"></td>
+      </tr>
+    </table>
+  </body>
+  <script src="script.js"></script>
+</html>
+
+#CSS
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+td {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+  font-size: 36px;
+}
+#JS
+let turn = "X";
+let gameOver = false;
+const cells = document.querySelectorAll("td");
+
+for (let i = 0; i < cells.length; i++) {
+  cells[i].addEventListener("click", function() {
+    if (!gameOver && !this.textContent) {
+      this.textContent = turn;
+      checkForWinningConditions();
+      turn = turn === "X" ? "O" : "X";
+    }
+  });
+}
+
+function checkForWinningConditions() {
+  const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (let i = 0; i < winningConditions.length; i++) {
+    const [a, b, c] = winningConditions[i];
+    if (
+      cells[a].textContent === turn &&
+      cells[b].textContent === turn &&
+      cells[c].textContent === turn
+    ) {
+      gameOver = true;
+      alert(turn + " wins!");
+      break;
+    }
+  }
+
+  if (!gameOver) {
+    let tie = true;
+    for (let i = 0; i < cells.length; i++) {
+      if (!cells[i].textContent) {
+        tie = false;
+        break;
+      }
+    }
+    if (tie) {
+      gameOver = true;
+      alert("It's a tie!");
+    }
+  }
+}
